@@ -7,15 +7,14 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
-@app.route("/emotionDetector", methods=["GET", "POST"])
+@app.route("/emotionDetector")
 def emotionDetector():
-    
     text_to_analyze = request.args.get("textToAnalyze")
 
-    if not text_to_analyze:
-        return "Invalid input! Please try again."
-
     result = emotion_detector(text_to_analyze)
+
+    if result["dominant_emotion"] is None:
+        return "Invalid text! Please try again!"
 
     response_text = (
         f"For the given statement, the system response is "
